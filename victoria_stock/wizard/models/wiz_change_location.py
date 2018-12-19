@@ -6,6 +6,7 @@ from datetime import timedelta
 
 class wiz_change_location(models.TransientModel):
     _name = 'wiz.change.location'
+    _description = 'Wiz Change Location'
 
     wiz_location_dest_id = fields.Many2one(
         'stock.location', "Destination Location",

@@ -249,6 +249,7 @@ class ProductProduct(models.Model):
 
 class PriceHistory(models.Model):
     _name = 'price.history'
+    _description = 'Price History'
     _order = 'changed_date'
 
     old_price = fields.Float(string='Was Price', digits=dp.get_precision('Sale Price'))
@@ -284,6 +285,7 @@ class PurchaseOrderLine(models.Model):
 
 class ProductFeature(models.TransientModel):
     _name = "product.feature.wizards"
+    _description = 'Product Feature'
 
     product_id = fields.Many2one('product.product', string='Product', required=True)
     feature = fields.Html(string="Features", sanitize_attributes=False)
@@ -307,6 +309,8 @@ class ProductFeature(models.TransientModel):
 
 class ProductBenefits(models.TransientModel):
     _name = "product.benefit.wizards"
+    _description = 'Product Benefits'
+
 
     product_id = fields.Many2one('product.product', string='Product', required=True)
     benefit = fields.Html(string="Benefits", sanitize_attributes=False)
@@ -330,6 +334,7 @@ class ProductBenefits(models.TransientModel):
 
 class ProductContains(models.TransientModel):
     _name = "product.contain.wizards"
+    _description = 'Product Contains'
 
     product_id = fields.Many2one('product.product', string='Product', required=True)
     contain = fields.Html(string="Contains", sanitize_attributes=False)
@@ -353,6 +358,7 @@ class ProductContains(models.TransientModel):
 
 class ProductFaq(models.TransientModel):
     _name = "product.faq.wizards"
+    _description = 'Product Faq'
 
     product_id = fields.Many2one('product.product', string='Product', required=True)
     faq = fields.Html(string="Features", sanitize_attributes=False)
@@ -376,6 +382,7 @@ class ProductFaq(models.TransientModel):
 
 class ProductDescription(models.TransientModel):
     _name = "product.description.wizards"
+    _description = 'Product Description'
 
     product_id = fields.Many2one('product.product', 'Product', required=True)
     description = fields.Html(string="Features", sanitize_attributes=False)

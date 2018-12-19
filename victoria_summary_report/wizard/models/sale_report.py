@@ -6,6 +6,7 @@ from datetime import datetime
 
 class SaleOrderSummary(models.TransientModel):
     _name = 'sale.order.summary'
+    _description = 'sale order summary'
 
     select_date = fields.Datetime(string="Select Date")
 
@@ -18,6 +19,7 @@ class SaleOrderSummary(models.TransientModel):
 
 class ReportDailyReorder(models.AbstractModel):
     _name = 'report.victoria_summary_report.order_summary_report'
+    _description = 'Report Daily Reorder'
 
     @api.model
     def _get_report_values(self, docids, data=None):
