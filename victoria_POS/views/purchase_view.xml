@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="victoria_pos_purchase_order_form" model="ir.ui.view">
+            <field name="name">purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+               <xpath expr="//button[@name='button_confirm']" position="attributes">
+                <attribute name="groups">victoria_profile.group_manager_victoria_headoffice</attribute>
+            </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- POS Shop Tree View -->
+        <record id="view_pos_shop_tree" model="ir.ui.view">
+            <field name="name">pos.shop.tree</field>
+            <field name="model">pos.shop</field>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <tree string="Contacts">
+                    <field name="name" string="Name"/>
+                    <field name="phone"/>
+                    <field name="email"/>
+                    <field name="user_id" invisible="1"/>
+                    <field name="country_id" invisible="1"/>
+                    <field name="active" invisible="1"/>
+                    <field name='picking_type' invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- POS Shop Form View -->
+        <record id="view_pos_shop_form" model="ir.ui.view">
+            <field name="name">pos.shop.form</field>
+            <field name="model">pos.shop</field>
+            <field name="priority" eval="1"/>
+            <field name="arch" type="xml">
+                <form string="POS Shop">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object"
+                                    class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button"
+                                    options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <field name="image" widget='image' class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" required="1" default_focus="1" placeholder="Name"/>
+                            </h1>
+                        </div>
+
+                        <group>
+                            <group>
+                                <label for="street" string="Address"/>
+                                <div class="o_address_format">
+                                    <field name="street" placeholder="Street..." class="o_address_street"/>
+                                    <field name="street2" placeholder="Street 2..." class="o_address_street"/>
+                                    <field name="city" placeholder="City" class="o_address_city"/>
+                                    <field name="state_id" class="o_address_state" placeholder="State" options='{"no_open": True}' context="{'country_id': country_id, 'zipcode': zipcode}"/>
+                                    <field name="zipcode" placeholder="ZIP" class="o_address_zip"/>
+                                    <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
+                                </div>
+                            </group>
+                            <group>
+                                <field name="phone" widget="phone"/>
+                                <field name="mobile" widget="phone"/>
+                                <field name="fax"/>
+                                <field name="email" widget="email"/>
+                            </group>
+                        </group>
+
+                        <notebook colspan="4">
+                            <page name='point_of_sales' string="Point Of Sales">
+                                <group name="container_row_2">
+                                    <group>
+                                        <field name="pos_ids"  widget="many2many_tags" options="{'no_create': True}"/>
+                                        <field name="user_id" widget="many2many_tags" options="{'no_create': True}"/>
+                                        <field name="location_id"/>
+                                        <field name='picking_type'/>
+                                    </group>
+                                    <group>
+                                        <field name="partner_id"/>
+                                        <field name="ref"/>
+                                        <field name="company_id" options="{'no_create': True}"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name='stock_transfer_request' string="Stock Transfer Request">
+                                <!-- <field name='picking_type' invisible="1"/> -->
+                                <field name="stock_picking_ids">
+                                    <tree limit="10">
+                                        <field name="name"/>
+                                        <field name="location_dest_id"/>
+                                        <field name="partner_id"/>
+                                        <field name="date" invisible="1"/>
+                                        <field name="min_date"/>
+                                        <field name="origin"/>
+                                        <field name="group_id" invisible="1"/>
+                                        <field name="backorder_id"/>
+                                        <field name="state"/>
+                                        <field name="priority" invisible="1"/>
+                                        <field name="picking_type_id" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                            <page name='internal_notes' string="Internal Notes">
+                                <field name="comment" placeholder="Internal note..."/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- POS Shop Search View -->
+        <record id="view_pos_shop_filter" model="ir.ui.view">
+            <field name="name">pos.shop.search</field>
+            <field name="model">pos.shop</field>
+            <field name="arch" type="xml">
+                <search string="Search Shop">
+                   <field name="name"
+                       filter_domain="['|',('ref','=',self),('email','ilike',self)]"/>
+                   <filter help="My Shop" domain="[('user_id','=',uid)]"/>
+                   <separator/>
+                   <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                   <separator/>
+                   <field name="user_id"/>
+                   <group expand="0" name="group_by" string="Group By">
+                       <filter name="salesperson" string="Salesperson" domain="[]" context="{'group_by' : 'user_id'}" />
+                       <filter string="Country" context="{'group_by': 'country_id'}"/>
+                   </group>
+               </search>
+            </field>
+        </record>
+
+        <!-- POS Shop Kanban View -->
+        <record model="ir.ui.view" id="pos_shop_kanban_view">
+            <field name="name">pos.shop.kanban</field>
+            <field name="model">pos.shop</field>
+            <field name="arch" type="xml">
+                <kanban class="o_res_partner_kanban">
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                    <field name="street"/>
+                    <field name="street2"/>
+                    <field name="zipcode"/>
+                    <field name="city"/>
+                    <field name="country_id"/>
+                    <field name="mobile"/>
+                    <field name="state_id"/>
+                    <field name="image_small"/>
+                    <field name="count_picking_in"/>
+                    <field name="count_picking_out"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="o_res_partner_kanban">
+                                <div class="o_kanban_tags_section oe_kanban_partner_categories"/>
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <div class="o_kanban_image">
+                                            <t t-if="record.image_small.raw_value">
+                                                <img t-att-src="kanban_image('pos.shop', 'image_small', record.id.value)"/>
+                                            </t>
+                                            <t t-if="!record.image_small.raw_value">
+                                                <img t-att-src='_s + "/victoria_POS/static/src/img/avatar.png"'/>
+                                            </t>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-9">
+                                        <div class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_view">
+                                            <strong class="oe_partner_heading"><field name="name"/></strong>
+                                        </div>
+                                        <div class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_new">
+                                             <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                                <div class="col-xs-12 text-right">
+                                                    <a type="edit">Edit</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ul>
+                                            <li t-if="record.city.raw_value and !record.country_id.raw_value"><field name="city"/></li>
+                                            <li t-if="!record.city.raw_value and record.country_id.raw_value"><field name="country_id"/></li>
+                                            <li t-if="record.city.raw_value and record.country_id.raw_value"><field name="city"/>, <field name="country_id"/></li>
+                                            <li t-if="record.email.raw_value" class="o_text_overflow"><field name="email"/></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_card_manage_pane">
+                                    <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                        <div class="o_kanban_card_manage_pane">
+                                            <br/>
+                                            <div class="col-xs-3 o_kanban_card_manage_section o_kanban_manage_view">
+                                                <span>Generate</span>
+                                            </div>
+                                            <div class="col-xs-9 o_kanban_card_manage_section o_kanban_manage_new">
+                                                 <a name="act_purchase_order_request" type="object">Purchase Order</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="oe_right">
+                                    <br/>
+                                    <button class="btn btn-info btn-sm" style="length:60%;width:60%;" name="act_stock_transfer_in" type="object">
+                                        <span>Transfer In (<t t-esc="record.count_picking_in.value"/>)</span>
+                                    </button>
+                                    <br/><br/>
+                                    <button class="btn btn-info btn-sm" style="length:60%;width:60%;" name="act_stock_transfer_out" type="object">
+                                        <span>Transfer Out (<t t-esc="record.count_picking_out.value"/>)</span>
+                                    </button>
+                                    <br/><br/>
+                                    <button class="btn btn-info btn-sm" style="length:60%;width:60%;"  name="act_stock_transfer_new" type="object">New Transfer Request</button>
+                                    <!-- <button class="btn btn-info btn-sm" style="length:60%;width:60%;" name="act_stock_transfer_in" type="object">Transfer In</button> -->
+                                    <!-- <button class="btn btn-info btn-sm" style="length:60%;width:60%;" name="act_stock_transfer_out" type="object">Transfer Out</button> -->
+                                </div>
+                                
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="action_pos_shop_form" model="ir.actions.act_window">
+            <field name="name">POS Transfer</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.shop</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" ref="view_pos_shop_filter"/>
+        </record>
+
+        <!-- POS Shop Menu -->
+        <menuitem action="victoria_POS.action_pos_shop_form" id="menu_pos_shop" parent="point_of_sale.menu_point_root" sequence="1"/>
+
+        <record id="res_users_pos_shop_form_view" model="ir.ui.view">
+            <field name="name">res.users.pos.shop.form.view</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[last()]/group/field[@name='pos_security_pin']" position="after">
+                    <field name="pos_shop_id" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_pos_details_wizard_victoria" model="ir.ui.view">
+            <field name="name">pos.details.wizard.form</field>
+            <field name="model">pos.details.wizard</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_details_wizard" />
+            <field name="arch" type="xml">
+                <field name="end_date" position="after">
+                   <field name="track_activity"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

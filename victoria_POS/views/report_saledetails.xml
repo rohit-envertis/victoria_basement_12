@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="point_of_sale.report_saledetails">
+            <t t-call="report.html_container">
+                <t t-call="report.internal_layout">
+                    <div class="page">
+                        <t t-if="track_activity">
+                            <div class="text-center">
+                                <h2>Sale Details</h2>
+
+                                <strong><t t-esc="date_start" t-options="{'widget': 'datetime'}"/> - <t t-esc="date_stop" t-options="{'widget': 'datetime'}"/></strong>
+                            </div>
+                            <h3>Products</h3>
+                            <table  class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Sold By</th>
+                                        <th>Date</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Price Unit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach='products' t-as='line'>
+                                        <t t-if="line['track_activity']">
+                                            <td><t t-esc="line['sold_by']"/></td>
+                                            <td><t t-esc="line['order_date']" t-options="{'widget': 'datetime'}"/></td>
+                                            <td><t t-esc="line['product_name']" /></td>
+                                            <td>
+                                                <t t-esc="line['quantity']" />
+                                                <t t-if='line["uom"] != "Unit(s)"'>
+                                                    <t t-esc='line["uom"]' /> 
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <t t-esc='line["price_unit"]' />
+                                                <t t-if='line["discount"] != 0'>
+                                                    Disc: <t t-esc='line["discount"]' />%
+                                                </t>
+                                            </td>
+                                        </t>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        <br/>
+                    </t>
+                    <t t-if="not track_activity">
+                        <div class="text-center">
+                            <h2>Sale Details</h2>
+                            <strong><t t-esc="date_start" t-options="{'widget': 'datetime'}"/> - <t t-esc="date_stop" t-options="{'widget': 'datetime'}"/></strong>
+                        </div>
+
+                        <!-- Orderlines -->
+                        <h3>Products</h3>
+                        <table  class="table table-condensed">
+                            <thead><tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th>Price Unit</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr t-foreach='products' t-as='line'>
+                                    <td><t t-esc="line['product_name']" /></td>
+                                    <td>
+                                        <t t-esc="line['quantity']" />
+                                        <t t-if='line["uom"] != "Unit(s)"'>
+                                            <t t-esc='line["uom"]' /> 
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <t t-esc='line["price_unit"]' />
+                                    <t t-if='line["discount"] != 0'>
+                                        Disc: <t t-esc='line["discount"]' />%
+                                    </t>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br/>
+                        <h3>Payments</h3>
+                        <table  class="table table-condensed">
+                            <thead><tr>
+                                <th>Name</th>
+                                <th>Total</th>
+                            </tr></thead>
+                            <tbody>
+                                <tr t-foreach='payments' t-as='payment'>
+                                    <td><t t-esc="payment['name']" /></td>
+                                    <td><t t-esc="payment['total']" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br/>
+                        <h3>Taxes</h3>
+                        <table  class="table table-condensed">
+                            <thead><tr>
+                                <th>Name</th>
+                                <th>Total</th>
+                            </tr></thead>
+                            <tbody>
+                            <tr t-foreach='taxes' t-as='tax'>
+                                <td><t t-esc="tax['name']" /></td>
+                                <td><t t-esc="tax['total']" /></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <br/>
+                        <br/>
+                        <strong>Total: <t t-esc='total_paid'/></strong>
+                     </t>
+                    </div>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
