@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Brand Main Menu -->
+        <menuitem action="victoria_product.action_product_brand" groups="base.group_no_one" id="menu_product_brand_config_purchase" parent="purchase.menu_product_in_config_purchase" sequence="3"/>
+    </data>
+</odoo>

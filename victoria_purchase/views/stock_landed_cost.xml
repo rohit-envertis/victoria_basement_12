@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_purchase_order_filter_victoria" model="ir.ui.view">
+            <field name="name">purchase.order.search</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="arch" type="xml">
+                <filter name="to_approve" position="after">
+                    <filter name="local" string="Local" domain="[('purchase_type', '=', 'local')]"/>
+                    <filter name="overseas" string="Overseas" domain="[('purchase_type','=','import')]"/>
+                </filter>
+                <xpath expr="//group" position="after">
+                     <filter name="Type" string="Type" domain="[]" context="{'group_by':'purchase_type'}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_type_form_landed" model="ir.ui.view">
+            <field name="name">purchase.type.purchase.order.form</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button type="object"
+                        name="action_open_payment"
+                        class="oe_stat_button"
+                        icon="fa-list-alt">
+                            <field name="po_payment" widget="statinfo" string="Payment" help="Make advance Purchase Order Payment"/>
+                            <field name="payment_ids" invisible="1"/>
+                        </button>
+                </div>
+                <field name="date_order" position="after">
+                    <field name="purchase_type" widget="radio" attrs="{'readonly': [('state', 'not in', ('draft'))]}" context="{'visible': purchase_type}" groups="victoria_profile.group_manager_victoria_headoffice, victoria_profile.group_staff_victoria_headoffice"/>
+                </field>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="attrs"> {'required':[('purchase_type', '=', 'local')]} </attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="attributes">
+                    <attribute name="attrs"> {'required':[('purchase_type', '=', 'local')]} </attribute>
+                </xpath>
+                <xpath expr="//field[@name='currency_id']" position="attributes">
+                    <attribute name="attrs"> {'required':[('purchase_type', '=', 'local')]} </attribute>
+                </xpath>
+                <xpath expr="//page/group/group/div/field[@name='date_planned']" position="replace">
+                </xpath>
+                
+                <xpath expr="//page/group/group/div" position="inside">
+                    <field name="date_planned" attrs="{'readonly': [('state', 'not in', ('draft', 'sent'))],'required': [('purchase_type','=','local')]}"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='order_line']/tree" position="inside">
+                    <field name="landed_cost" invisible="context.get('hide_landed')"/>
+                </xpath>
+                <xpath expr="//page" position="after">
+                    <page string="Landed Cost" groups="victoria_profile.group_manager_victoria_headoffice" attrs="{'invisible': [('purchase_type', 'in', ('local'))]}">
+                        <!-- <group>
+                            <group>
+                                <field name="account_journal_id"/>
+                            </group>
+                            <group>
+                                <field name="account_move_id" readonly="1"/>
+                            </group>
+                        </group> -->
+                        <field name="stock_cost_lines">
+                            <form string="Cost Lines">
+                                <group>
+                                    <group>
+                                        <field name="product_id" domain="[('landed_cost_ok', '=', True)]" context="{'default_landed_cost_ok': True, 'form_view_ref': 'stock_landed_costs.view_stock_landed_cost_type_form'}" string="Item"/>
+                                        <field name="price_unit"/>
+                                    </group>
+                                    <group>
+                                        <field name="split_method" readonly="1"/>
+                                        <field name="account_id"/>
+                                    </group>
+                                </group>
+                                <label for="name"/>
+                                <field name="name"/>
+                            </form>
+                            <tree string="Cost Lines" editable="bottom">
+                                <field name="product_id" domain="[('landed_cost_ok', '=', True)]" context="{'default_landed_cost_ok': True, 'form_view_ref': 'stock_landed_costs.view_stock_landed_cost_type_form'}" string="Item"/>
+                                <field name="name" invisible="1"/>
+                                <field name="account_id" />
+                                <field name="split_method" readonly="1"/>
+                                <field name="product_qty" invisible="1"/>
+                                <field name="price_unit" string="Price"/>
+                                <field name="taxes_id" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase')]" context="{'default_type_tax_use': 'purchase'}" string="GST"/>
+                                <field name="price_subtotal" widget="monetary"/>
+                                <field name="currency_id" invisible="1"/>
+                            </tree>
+                        </field>
+                        <group class="oe_subtotal_footer oe_right">
+                            <!-- <field name="amount_total_landed" widget="monetary"/> -->
+                            <field name="ll_amount_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}" string="SUB TOTAL"/>
+                            <field name="ll_amount_tax" widget="monetary" options="{'currency_field': 'currency_id'}" string="GST"/>
+                            <div class="oe_subtotal_footer_separator oe_inline">
+                                <label for="ll_amount_total" string="TOTAL"/>
+                            </div>
+                            <field name="ll_amount_total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <button colspan="2" name="compute_landed_cost" string="Compute" type="object" class="oe_right btn-default" />
+                        </group>
+                        <!-- <group class="oe_subtotal_footer oe_right"> -->
+                            <!-- <field name="amount_total" widget="monetary"/> -->
+                        <!-- </group> -->
+                        <div class="oe_clear"/>
+                        <separator string="Valuation Adjustments"/>
+                        <field name="valuation_adjustment_lines">
+                            <form string="Valuation Adjustments">
+                                <group>
+                                    <group>
+                                        <field name="product_id"/>
+                                        <field name="quantity"/>
+                                    </group>
+                                    <group>
+                                        <field name="former_cost"/>
+                                        <field name="additional_landed_cost"/>
+                                    </group>
+                                </group>
+                            </form>
+                            <tree string="Valuation Adjustments" editable="bottom" create="0">
+                                <field name="cost_line_id" readonly="1"/>
+                                <field name="product_id" readonly="1"/>
+                                <field name="weight" readonly="1"/>
+                                <field name="volume" readonly="1"/>
+                                <field name="quantity" readonly="1"/>
+                                <field name="former_cost_per_unit" readonly="1" widget="monetary"/>
+                                <field name="former_cost" readonly="1"/>
+                                <field name="additional_landed_cost"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_purchase_order_local" model="ir.actions.act_window">
+            <field name="name">RFQ (Local PO)</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="search_view_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="domain">[('purchase_type', '=', 'local'),('state', 'in', ('draft','sent','bid','cancel', 'confirmed'))]</field>
+            <field name="context">{'default_purchase_type': 'local', 'hide_landed': True}</field>
+        </record>
+
+        <record id="action_purchase_order_local_1" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="purchase_order_type_form_landed"/>
+            <field name="act_window_id" ref="action_purchase_order_local"/>
+        </record>
+
+        <record id="action_purchase_order_local_1_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="purchase.purchase_order_tree"/>
+            <field name="act_window_id" ref="action_purchase_order_local"/>
+        </record>
+
+        <record id="action_purchase_order_overseas" model="ir.actions.act_window">
+            <field name="name">RFQ (Overseas PO)</field>
+            <field name="res_model">purchase.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="search_view_id" ref="purchase.view_purchase_order_filter"/>
+            <field name="domain">[('purchase_type','=','import'),('state', 'in', ('draft','sent','bid','cancel', 'confirmed'))]</field>
+            <field name="context">{'default_purchase_type': 'import', 'hide_landed': False}</field>
+        </record>
+
+        <record id="action_purchase_order_overseas_1_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="purchase.purchase_order_tree"/>
+            <field name="act_window_id" ref="action_purchase_order_overseas"/>
+        </record>
+
+        <record id="action_purchase_order_overseas_1" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="purchase_order_type_form_landed"/>
+            <field name="act_window_id" ref="action_purchase_order_overseas"/>
+        </record>
+
+        <record id="purchase.purchase_form_action" model="ir.actions.act_window">
+            <field name="context">{'default_purchase_type': 'import', 'hide_landed': False}</field>
+        </record>
+
+        <record id="purchase.purchase_rfq" model="ir.actions.act_window">
+            <field name="context">{'default_purchase_type': 'import', 'hide_landed': False}</field>
+        </record>
+
+        <!-- <menuitem action="action_purchase_order_local"
+            id="menu_action_purchase_order_local" parent="purchase.menu_procurement_management"
+            sequence="1" groups="purchase.group_purchase_user,victoria_profile.group_manager_victoria_headoffice"/>
+
+        <menuitem action="action_purchase_order_overseas"
+            id="menu_action_purchase_order_overseas" parent="purchase.menu_procurement_management"
+            sequence="2" groups="victoria_profile.group_manager_victoria_headoffice,victoria_profile.group_staff_victoria_headoffice"/> -->
+
+        <record id="action_account_payments_payable_vb" model="ir.actions.act_window">
+            <field name="name">Vendor Payments</field>
+            <field name="res_model">account.payment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="context">{'default_payment_type': 'outbound', 'default_partner_type': 'supplier'}</field>
+            <field name="domain">[('partner_type', '=', 'supplier')]</field>
+            <field name="view_id" ref="account.view_account_supplier_payment_tree"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                  Click to register a payment
+                </p><p>
+                  Payments are used to register liquidity movements (send, collect or transfer money).
+                  You can then process those payments by your own means or by using installed facilities.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

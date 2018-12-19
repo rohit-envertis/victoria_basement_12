@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Product Web Categories -->
+        <record id="product_web_category_form_view" model="ir.ui.view">
+            <field name="name">product.web.category.form</field>
+            <field name="model">product.web.category</field>
+            <field name="arch" type="xml">
+                <form string="Website Web Categories">
+                    <sheet>
+                        <field name="image_medium" widget='image' class="oe_avatar"/>
+                        <div class="oe_left">
+                            <group>
+                                <field name="name"/>
+                                <field name="parent_id"/>
+                                <field name="sequence"/>
+                                <field name="linking_category_id"/>
+                            </group>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="product_web_category_tree_view" model="ir.ui.view">
+            <field name="name">product.web.category.tree</field>
+            <field name="model">product.web.category</field>
+            <field name="field_parent" eval="False"/>
+            <field name="arch" type="xml">
+                <tree string="Product Web Categories">
+                    <field name="sequence" invisible="1"/>
+                    <field name="display_name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="product_web_category_action" model="ir.actions.act_window">
+            <field name="name">Website Product Categories</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.web.category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new category.
+              </p><p>
+                Categories are used to browse your products through the
+                touchscreen interface.
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="victoria_product.product_web_category_action" groups="base.group_no_one" id="menu_product_webcategory_action_form" parent="sale.prod_config_main" sequence="3"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- <record id="product_category_dinnerware" model="product.category">
+            <field name="name">Dinnerware</field>
+        </record>
+        <record id="product_category_Benzer" model="product.category">
+            <field name="parent_id" ref="product_category_dinnerware"/>
+            <field name="name">Benzer - Poplin</field>
+        </record>
+        <record id="product_category_cutlery" model="product.category">
+            <field name="name">Cutlery</field>
+        </record>
+        <record id="product_category_glassware" model="product.category">
+            <field name="name">Glassware</field>
+        </record>
+        <record id="product_category_giftware" model="product.category">
+            <field name="name">Giftware</field>
+        </record>
+        <record id="product_category_cookware" model="product.category">
+            <field name="name">Cookware</field>
+        </record>
+        <record id="product_category_outdoorliving" model="product.category">
+            <field name="name">Outdoor Living</field>
+        </record>
+        <record id="product_category_dailybake" model="product.category">
+            <field name="name">Daily Bake</field>
+        </record>
+        <record id="product_category_kitchenware" model="product.category">
+            <field name="parent_id" ref="product_category_outdoorliving"/>
+            <field name="name">Kitchenware</field>
+        </record>
+
+        <record id="pos_category_dinnerware" model="pos.category">
+            <field name="name">Dinnerware</field>
+        </record>
+        <record id="pos_category_Benzer" model="pos.category">
+            <field name="parent_id" ref="pos_category_dinnerware"/>
+            <field name="name">Benzer - Poplin</field>
+        </record>
+        <record id="pos_category_cutlery" model="pos.category">
+            <field name="name">Cutlery</field>
+        </record>
+        <record id="pos_category_glassware" model="pos.category">
+            <field name="name">Glassware</field>
+        </record>
+        <record id="pos_category_giftware" model="pos.category">
+            <field name="name">Giftware</field>
+        </record>
+        <record id="pos_category_cookware" model="pos.category">
+            <field name="name">Cookware</field>
+        </record>
+        <record id="pos_category_outdoorliving" model="pos.category">
+            <field name="name">Outdoor Living</field>
+        </record>
+        <record id="pos_category_dailybake" model="product.category">
+            <field name="name">Daily Bake</field>
+        </record>
+        <record id="pos_category_kitchenware" model="pos.category">
+            <field name="parent_id" ref="pos_category_outdoorliving"/>
+            <field name="name">Kitchenware</field>
+        </record>
+
+        <record id="product_details_1" model="product.template">
+            <field name="name">Amano - Costa de Luna Side Plate 17cm Pietra - Made in Portugal</field>
+            <field name="type">product</field>
+            <field name="default_code">Amano</field>
+            <field name="categ_id" ref="product_category_dinnerware"></field>
+            <field name="pos_categ_id" ref="pos_category_dinnerware"></field>
+        </record>
+
+        <record id="product_details_2" model="product.template">
+            <field name="name">Benzer - Strata Stainless Steel Cutlery Set 16pc</field>
+            <field name="type">product</field>
+            <field name="default_code">Benzer</field>
+            <field name="categ_id" ref="product_category_cutlery"></field>
+            <field name="pos_categ_id" ref="pos_category_cutlery"></field>
+        </record>
+
+        <record id="product_details_3" model="product.template">
+            <field name="name">Zuhause - Style Champagne 290ml Saucer set 6 (Made in Germany)</field>
+            <field name="type">product</field>
+            <field name="default_code">Zuhause</field>
+            <field name="categ_id" ref="product_category_glassware"></field>
+            <field name="pos_categ_id" ref="pos_category_glassware"></field>
+        </record>
+
+
+        <record id="product_details_4" model="product.template">
+            <field name="name">WMF - Diadem Plus 3pc 18/10 Stainless Steel Saucepan Set</field>
+            <field name="type">product</field>
+            <field name="default_code">WMF</field>
+            <field name="categ_id" ref="product_category_cookware"></field>
+            <field name="pos_categ_id" ref="pos_category_cookware"></field>
+        </record>
+
+        <record id="product_details_5" model="product.template">
+            <field name="name">Anna Gare - Caravanna Cactus Wooden Sculpture 9x20cm</field>
+            <field name="type">product</field>
+            <field name="default_code">Anna Gare</field>
+            <field name="categ_id" ref="product_category_giftware"></field>
+            <field name="pos_categ_id" ref="pos_category_giftware"></field>
+        </record> -->
+
+        <record forcecreate="True" id="product.decimal_price" model="decimal.precision">
+            <field name="digits">4</field>
+        </record>
+        <record forcecreate="True" id="product.decimal_discount" model="decimal.precision">
+            <field name="digits">4</field>
+        </record>
+    </data>
+
+</odoo>
+

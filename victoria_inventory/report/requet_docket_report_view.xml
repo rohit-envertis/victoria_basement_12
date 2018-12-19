@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report
+            string="Requet Docket Report"
+            id="action_report_requet_docket_report"
+            model="stock.transfer.victoria"
+            report_type="qweb-pdf"
+            name="victoria_inventory.report_requet_docket_report"
+            file="victoria_inventory.report_requet_docket_report"
+        />
+    </data>
+</odoo>

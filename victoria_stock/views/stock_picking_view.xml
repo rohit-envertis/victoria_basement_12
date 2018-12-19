@@ -1,0 +1,130 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <!-- <record id="view_picking_form_victoria" model="ir.ui.view">
+            <field name="name">stock.picking.form.view</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='name']" position="after">
+                    <div class="oe_title">
+                        <field name="transfer_type" options="{'horizontal': true}"  widget="radio" states="draft"/>
+                    </div>
+                </xpath>
+                <xpath expr="//button[@name='do_new_transfer']" position="attributes">
+                    <attribute name='invisible'>1</attribute>
+                </xpath>
+                    <xpath expr="//button[@name='do_new_transfer']" position="after">
+                        <button name="change_location" type="object"
+                            string="Change Location"
+                            attrs="{'invisible': ['|','|',('show_location', '=', False),
+                            ('picking_type_code', 'not in', ('incoming','internal')),
+                            ('state', 'in', ('done','cancelled'))]}"/>
+                        <button name="button_pick" type="object"
+                            string="Pick"
+                            states="assigned" class="oe_highlight"/>
+                        <button name="button_verify" type="object"
+                            string="Verify"
+                            states="pick" class="oe_highlight"/>
+                        <button name="button_send" type="object"
+                            string="Transfer"
+                            states="verify" class="oe_highlight"/>
+                        <button name="button_receive" type="object"
+                             string="Receive" 
+                             class="oe_highlight"
+                             attrs="{'invisible': ['|','|',('check_out', '=', False),('check_in', '=', True),('state', '!=', 'send')]}"/>
+                    </xpath>
+                    <field name="origin" position="after">
+                        <field name="show_location" invisible="1"/>
+                        <field name="check_in" invisible="1"/>
+                        <field name="check_out" invisible="1"/>
+                    </field>
+                    <field name="state" position="attributes">
+                    <attribute name="statusbar_visible">
+                        draft,confirmed,partially_available,
+                        assigned,pick,verify,send,done</attribute>
+                </field>
+                </data>
+            </field>
+        </record> -->
+
+        <record id="view_picking_form_victoria" model="ir.ui.view">
+            <field name="name">stock.picking.form.view</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location_id']" position="attributes">
+                    <attribute name="domain">[('usage', '=', 'internal')]</attribute>
+                </xpath>
+                <xpath expr="//field[@name='location_dest_id']" position="attributes">
+                    <attribute name="domain">[('usage', '=', 'internal')]</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_confirm']" position="attributes">
+                    <attribute name="string">Confirm Request</attribute>
+                </xpath>
+                <xpath expr="//button[@name='action_assign']" position="attributes">
+                    <attribute name="string">Pick Stock</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_validate']" position="replace">
+                    <button name="button_validate" states="assigned" string="Ship Stock" groups="stock.group_stock_user" type="object" class="oe_highlight"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_picking_internal_search_inherit_vb" model="ir.ui.view">
+            <field name="name">stock.picking.internal.search.inherit.vb</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+            <field name="arch" type="xml">
+                <filter name="draft" position="before">
+                    <filter string="New" domain="[('state','=','draft')]" name="new"/>
+                    <filter string="In Progress" domain="[('state','not in',('draft','done'))]" name="in_progress"/>
+                    <filter string="Completed" domain="[('state','=','done')]" name="completed"/>
+                    <separator/>
+                    <filter name="today" string="Today"  
+                        domain="[('min_date', '&gt;=', datetime.datetime.now().replace(hour=0, minute=0, second=0)),('min_date', '&lt;=', datetime.datetime.now().replace(hour=23, minute=59, second=59))]"/>
+                    <filter name="week" string="This Week"  domain="[('min_date','&gt;', (context_today() - datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d'))]" />
+                    <filter name="month" string="This Month" domain="[('min_date','&gt;',(context_today() - datetime.timedelta(days=30)).strftime('%%Y-%%m-%%d'))]" />
+                    <separator/>
+                </filter>
+            </field>
+        </record> 
+
+        <record id="stock.action_picking_tree_all" model="ir.actions.act_window">
+            <field name="context">{"search_default_new":1}</field>
+            <field name="search_view_id" ref="victoria_stock.view_picking_internal_search_inherit_vb" />
+        </record>
+
+        <record id="view_location_form_inherit_vb" model="ir.ui.view">
+            <field name="name">stock.location</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+           <xpath expr="//field[@name='comment']" position="after">
+            <notebook>
+            <page string="Address">
+                <label for="street" string="Address"/>
+                            <div class="o_address_format">
+                                <group>
+                                    <group>
+                                <field name="street" placeholder="Street..." class="o_address_street" />
+                                <field name="street2" placeholder="Street 2..." class="o_address_street" />
+                                <field name="city" placeholder="City" class="o_address_city" />
+                            </group>
+                            <group>
+                                <field name="state_id" class="o_address_state" placeholder="State" options="{&quot;no_open&quot;: True}"  context="{'country_id': country_id, 'zip': zip}"/>
+                                <field name="zip" placeholder="ZIP" class="o_address_zip" />
+                                <field name="country_id" placeholder="Country" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" />
+                            </group>
+                        </group>
+                            </div>
+                        </page>
+                    </notebook>
+                    </xpath>
+                </field>
+            </record>
+
+    </data>
+</odoo>

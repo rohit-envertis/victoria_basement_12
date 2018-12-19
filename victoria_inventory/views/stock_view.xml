@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="inherit_view_picking_form" model="ir.ui.view">
+            <field name="name">inherit.view.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='origin']" position="after">
+                    <field name="min_date"/>
+                    <field name="max_date"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="seq_stock_transfer_victoria" model="ir.sequence">
+            <field name="name">Stock Transfer</field>
+            <field name="code">stock.transfer.victoria</field>
+            <field name="prefix">ST/OUT/</field> <!-- Out Stock Transfer -->
+            <field name="padding">4</field>
+        </record> 
+
+         <record id="view_stock_transfer_victoria_form" model="ir.ui.view">
+            <field name="name">Stock Transfer</field>
+            <field name="model">stock.transfer.victoria</field>
+            <field name="arch" type="xml">
+                <form string="Stock Transfer">
+                    <header>
+                        <button colspan="2" name="compute_stock_transfer_lines"
+                            string="Compute" type="object" class="oe_highlight btn-default" states='draft'/>
+                        <button name="button_check" string="Check" states="compute" class="oe_highlight" type="object"/>
+                        <button name="button_recheck" string="Re-Check" states="check"
+                                class="oe_highlight" type="object"/>
+                        <button name="button_cancel" string="Cancel" states="draft,compute,check" type="object"/>
+                        <button name="button_done" string="Re-Open" states="recheck" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,recheck"/>
+                    </header>
+                    <sheet>
+                        <field name="name"/>
+                        <group>
+                            <group>
+                                <field name="date_to" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                            </group>
+                            <group>
+                                <field name="date_from" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+                            </group>
+                        </group>
+                        
+                        <field name="transfer_lines">
+                            <tree string="Transfer Lines" editable="bottom">
+                                <field name="name" readonly="1"/>
+                                <field name="picking_type_id" readonly="1"/>
+                               <!--  <field name="product_id"/>
+                                <field name="product_uom_qty"/>
+                                <field name="product_uom"/>-->
+                                <field name="state" readonly="1"/> 
+                                <field name="check" />
+                                <field name="recheck" attrs="{'readonly': [('check','=',(False))]}"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_stock_transfer_victoria_tree" model="ir.ui.view">
+            <field name="name">Stock Transfer</field>
+            <field name="model">stock.transfer.victoria</field>
+            <field name="arch" type="xml">
+                <tree string="Product Brand">
+                    <field name="name"/>
+                    <field name="date_to"/>
+                    <field name="date_from"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_stock_transfer_victoria_search" model="ir.ui.view">
+            <field name="name">Stock Transfer</field>
+            <field name="model">stock.transfer.victoria</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_stock_transfer_victoria" model="ir.actions.act_window">
+            <field name="name">Stock Check/Dispatch</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.transfer.victoria</field>
+            <field name="view_id" ref="view_stock_transfer_victoria_tree"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+         <menuitem action="victoria_inventory.action_stock_transfer_victoria" id="menu_stock_transfer_victoria"
+                   parent="stock.menu_stock_warehouse_mgmt" sequence="3"
+                   groups="stock.group_stock_manager,stock.group_stock_user"/>
+
+    </data>
+</odoo>

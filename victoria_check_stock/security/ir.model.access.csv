@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_checker_user,stock.stock_checker_user,model_stock_checker,stock.group_stock_user,1,1,1,1
+access_stock_checker_manager,stock.stock_checker_manager,model_stock_checker,stock.group_stock_manager,1,1,1,1
+access_stock_checker_headoffice,victoria_profile.stock_checker_headoffice,model_stock_checker,victoria_profile.group_admin_victoria_headoffice,1,1,1,1
+stock.access_stock_quant_manager,stock.quant manager,stock.model_stock_quant,stock.group_stock_manager,1,1,1,0
+access_stock_quant_headoffice,victoria_profile.stock_quant_headoffice,model_stock_quant,victoria_profile.group_admin_victoria_headoffice,1,1,1,0

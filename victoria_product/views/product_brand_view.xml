@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Brand Form View -->
+        <record id="view_product_brand_form" model="ir.ui.view">
+            <field name="name">Product Brand</field>
+            <field name="model">product.brand</field>
+            <field name="arch" type="xml">
+                <form string="Product Brand">
+                    <sheet>
+                        <field name="logo" widget='image' class="oe_avatar"/>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" default_focus="1" placeholder="Name"/>
+                            </h1>
+                        </div>
+                        <field name="code" placeholder="Code"/>
+                        <group string="General Information">
+                            <group>
+                                
+                                <field name="brand_url"/>
+                                <field name="is_own"/>
+                                <field name="company_id" />
+                                <label for="street" string="Address"/>
+                                <div>
+                                    <field name="street" placeholder="Street..."/>
+                                    <field name="street2" />
+                                    <div>
+                                        <field name="city" placeholder="City" style="width: 40%%"/>
+                                        <field name="state_id" class="oe_no_button" placeholder="State" style="width: 24%%" options='{"no_open": True}'/>
+                                        <field name="zip_code" placeholder="ZIP" style="width: 34%%"/>
+                                    </div>
+                                    
+                                    <field name="country_id" placeholder="Country" class="oe_no_button" options='{"no_open": True}' />
+                                    
+                                </div>
+                                <field name="website" widget="url" placeholder="e.g. www.odoo.com"/>
+                            </group>
+                            <group>
+                                <field name="phone" placeholder="e.g 0000000000"/>
+                                <field name="fax" placeholder="e.g 0000000000"/>
+                                <field name="email" placeholder="e.g abc@example.com" />
+                                <field name="rml_header1" placeholder="e.g. Global Business Solutions"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Brand Tree View -->
+        <record id="view_product_brand_tree" model="ir.ui.view">
+            <field name="name">Product Brand</field>
+            <field name="model">product.brand</field>
+            <field name="arch" type="xml">
+                <tree string="Product Brand">
+                    <field name="name"/>
+                    <field name="company_id" string="Company Name" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- Brand Search View -->
+        <record id="view_product_brand_search" model="ir.ui.view">
+            <field name="name">Product Brand</field>
+            <field name="model">product.brand</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="company_id"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- brand action-->
+        <record id="action_product_brand" model="ir.actions.act_window">
+            <field name="name">Brand</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.brand</field>
+            <field name="view_id" ref="view_product_brand_tree"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Brand Main Menu -->
+        <menuitem action="victoria_product.action_product_brand" groups="base.group_no_one" id="menu_product_brand_config_sale" parent="sale.prod_config_main" sequence="3"/>
+
+    </data>
+</odoo>

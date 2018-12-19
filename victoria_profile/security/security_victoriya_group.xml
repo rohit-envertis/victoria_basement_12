@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <!-- <record model="ir.module.category" id="module_category_victoria_basement">
+            <field name="name">Victoria</field>
+            <field name="description">Victoria User access all documents and perform all operations.</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="group_staff_victoria_basement" model="res.groups">
+            <field name="name">Staff</field>
+            <field name="comment">the user will have only staff rights</field>
+            <field name="category_id" ref="module_category_victoria_basement"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_manager_victoria_basement" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="comment">The user will have manager access rights</field>
+            <field name="category_id" ref="module_category_victoria_basement"/>
+            <field name="implied_ids" eval="[(4, ref('group_staff_victoria_basement'))]"/>
+        </record>
+
+        <record id="group_admin_victoria_basement" model="res.groups">
+            <field name="name">Admin</field>
+            <field name="comment">The user will have an all access right</field>
+            <field name="category_id" ref="module_category_victoria_basement"/>
+            <field name="implied_ids" eval="[(4, ref('group_manager_victoria_basement'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record> -->
+
+        <!-- head office group -->
+        <record model="ir.module.category" id="module_category_victoria_headoffice">
+            <field name="name">Headoffice</field>
+            <field name="description">Headoffice User access all documents and perform all operations.</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="group_staff_victoria_headoffice" model="res.groups">
+            <field name="name">Operator</field>
+            <field name="comment">the user will have only operator rights</field>
+            <field name="category_id" ref="module_category_victoria_headoffice"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_manager_victoria_headoffice" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="comment">The user will have manager access rights</field>
+            <field name="category_id" ref="module_category_victoria_headoffice"/>
+            <field name="implied_ids" eval="[(4, ref('group_staff_victoria_headoffice'))]"/>
+        </record>
+
+        <record id="group_admin_victoria_headoffice" model="res.groups">
+            <field name="name">Admin</field>
+            <field name="comment">The user will have an all access right</field>
+            <field name="category_id" ref="module_category_victoria_headoffice"/>
+            <field name="implied_ids" eval="[(4, ref('group_manager_victoria_headoffice'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <!-- Store group -->
+        <!-- <record model="ir.module.category" id="module_category_victoria_store">
+            <field name="name">Store</field>
+            <field name="description">Store User access all documents and perform all operations.</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="group_staff_victoria_store" model="res.groups">
+            <field name="name">Operator</field>
+            <field name="comment">the user will have only operator rights</field>
+            <field name="category_id" ref="module_category_victoria_store"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_manager_victoria_store" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="comment">The user will have manager access rights</field>
+            <field name="category_id" ref="module_category_victoria_store"/>
+            <field name="implied_ids" eval="[(4, ref('group_staff_victoria_store'))]"/>
+        </record>
+
+        <record id="group_admin_victoria_store" model="res.groups">
+            <field name="name">Admin</field>
+            <field name="comment">The user will have an all access right</field>
+            <field name="category_id" ref="module_category_victoria_store"/>
+            <field name="implied_ids" eval="[(4, ref('group_manager_victoria_store'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record> -->
+
+        <!-- WareHouse group -->
+        <!-- <record model="ir.module.category" id="module_category_victoria_warehouse">
+            <field name="name">WareHouse</field>
+            <field name="description">WareHouse User access all documents and perform all operations.</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="group_staff_victoria_warehouse" model="res.groups">
+            <field name="name">Operator</field>
+            <field name="comment">the user will have only operator rights</field>
+            <field name="category_id" ref="module_category_victoria_warehouse"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_manager_victoria_warehouse" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="comment">The user will have manager access rights</field>
+            <field name="category_id" ref="module_category_victoria_warehouse"/>
+            <field name="implied_ids" eval="[(4, ref('group_staff_victoria_warehouse'))]"/>
+        </record>
+
+        <record id="group_admin_victoria_warehouse" model="res.groups">
+            <field name="name">Admin</field>
+            <field name="comment">The user will have an all access right</field>
+            <field name="category_id" ref="module_category_victoria_warehouse"/>
+            <field name="implied_ids" eval="[(4, ref('group_manager_victoria_warehouse'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record> -->
+
+        <!-- E-commerce group -->
+        <!-- <record model="ir.module.category" id="module_category_victoria_ecommerce">
+            <field name="name">Ecommerce</field>
+            <field name="description">Ecommerce User access all documents and perform all operations.</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <record id="group_staff_victoria_ecommerce" model="res.groups">
+            <field name="name">Operator</field>
+            <field name="comment">the user will have only operator rights</field>
+            <field name="category_id" ref="module_category_victoria_ecommerce"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="group_manager_victoria_ecommerce" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="comment">The user will have manager access rights</field>
+            <field name="category_id" ref="module_category_victoria_ecommerce"/>
+            <field name="implied_ids" eval="[(4, ref('group_staff_victoria_ecommerce'))]"/>
+        </record>
+
+        <record id="group_admin_victoria_ecommerce" model="res.groups">
+            <field name="name">Admin</field>
+            <field name="comment">The user will have an all access right</field>
+            <field name="category_id" ref="module_category_victoria_ecommerce"/>
+            <field name="implied_ids" eval="[(4, ref('group_manager_victoria_ecommerce'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record> -->
+
+    </data>
+</odoo>

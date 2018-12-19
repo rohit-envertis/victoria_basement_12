@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Style Form View -->
+        <record id="view_product_style_form" model="ir.ui.view">
+            <field name="name">Product Style</field>
+            <field name="model">product.style</field>
+            <field name="arch" type="xml">
+                <form string="Product Style">
+                    <sheet>
+                         <field name="logo" widget='image' class="oe_avatar"/>
+                        <h1>
+                            <field name="name" default_focus="1" placeholder="Name"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="style_url"/>
+                                <field name="category_id"/>
+                            </group>
+                            <group>
+                                <field name="active"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Style Tree View -->
+        <record id="view_product_style_tree" model="ir.ui.view">
+            <field name="name">Product Style</field>
+            <field name="model">product.style</field>
+            <field name="arch" type="xml">
+                <tree string="Product Style">
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <field name="active"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Style Search View -->
+        <record id="view_product_style_search" model="ir.ui.view">
+            <field name="name">Product Style</field>
+            <field name="model">product.style</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="category_id"/>
+                    <field name="active"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Style action-->
+        <record id="action_product_style" model="ir.actions.act_window">
+            <field name="name">Style</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.style</field>
+            <field name="view_id" ref="view_product_style_tree"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Style Main Menu -->
+        <menuitem action="victoria_product.action_product_style" groups="base.group_no_one" id="menu_product_style_config_sale" parent="sale.prod_config_main" sequence="3"/>
+
+    </data>
+</odoo>

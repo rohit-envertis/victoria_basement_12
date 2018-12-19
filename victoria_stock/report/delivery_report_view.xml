@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="sale_order_delivery_external_layout_header">
+            <!--<div class="header">-->
+                <div class="row">
+                    <center>
+                        <img style="max-height: 200px;" t-att-src="'data:image/png;base64,%s' % o.partner_id.company_id.logo"/>
+                    </center>
+                    <center>
+                        <b>ABN &amp;nbsp;<span t-esc="o.partner_id.company_id.abn"/></b>
+                    </center>
+                    <center>
+                        <h3><b><span>DELIVERY NOTE</span></b></h3>
+                    </center>
+                    <center>
+                        <span>5 Victoria Ave,</span>
+                    </center>
+                </div>
+            <!--</div>-->
+        </template>
+
+        <template id="sale_order_delivery_external_layout_footer">
+            <div class="footer">
+                <div class="row">
+                </div>
+            </div>
+        </template>
+
+        <template id="sale_order_delivery_external_layout">
+            <t t-if="not o and doc">
+                <t t-set="o" t-value="doc"/>
+            </t>
+            <t t-if="o and 'company_id' in o">
+                <t t-set="company" t-value="o.company_id"/>
+            </t>
+            <t t-if="not o or not 'company_id' in o">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+            <t t-call="victoria_stock.sale_order_delivery_external_layout_header"/>
+            <t t-raw="0"/>
+            <t t-call="victoria_stock.sale_order_delivery_external_layout_footer"/>
+        </template>
+
+        <template id="sale_order_delivery_report">
+            <t t-call="victoria_stock.sale_order_delivery_external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <br/>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <br/>
+                                <div class="col-xs-7 pull-left">
+                                    <span>Invoice To</span><br/><br/>
+                                    <t t-foreach="o.get_invoice_address(o.origin)" t-as="invoice_address">
+                                        <span t-if="invoice_address.name" t-esc="invoice_address.name"/><br/>
+                                        <span t-if="invoice_address.street" t-esc="invoice_address.street"/><br/>
+                                        <span t-if="invoice_address.street2" t-esc="invoice_address.street2"/><br/>
+                                        <span t-if="invoice_address.city" t-esc="invoice_address.city"/> <span t-if="invoice_address.state_id" t-esc="invoice_address.state_id.code"></span>&amp;nbsp;<span t-if="invoice_address.zip" t-esc="invoice_address.zip"></span>
+                                    </t>
+                                </div>
+                                <div class="col-xs-5 pull-right">
+                                    <span>Deliver To</span><br/>
+                                    <t t-foreach="o.get_deliver_address(o.origin)" t-as="shipping_address">
+                                        <span t-if="shipping_address.street" t-esc="shipping_address.street"/><br/>
+                                        <span t-if="shipping_address.street2" t-esc="shipping_address.street2"/><br/>
+                                        <span t-if="shipping_address.city" t-esc="shipping_address.city"/> <span t-if="shipping_address.state_id" t-esc="shipping_address.state_id.code"></span>&amp;nbsp;<span t-if="shipping_address.zip" t-esc="shipping_address.zip"></span>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br/>
+                            <div class="col-xs-6">
+                                <center>
+                                    <b>Invoice No: CSIN-1085503</b>
+                                </center>
+                                <center>
+                                    <b>Order No: <span t-esc="o.origin"/> </b>
+                                </center>
+                            </div>
+                            <div class="col-xs-6">
+                                <center>
+                                    <span>Date: <span t-field="o.min_date" t-field-options='{"format": "dd/MM/YYYY"}'></span></span>
+                                </center>
+                                <center>
+                                    <b>Customer: <span t-esc="o.partner_id.name"></span> </b>
+                                </center>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <table class="table table-bordered table-condensed">
+                                <tr style="border-bottom:1px solid black;">
+                                    <th width="20%"><span>Code</span></th>
+                                    <th width="20%"><span>Description</span></th>
+                                    <th width="20%"><span><center>Ord Qty</center></span></th>
+                                    <th width="20%"><span><center>To Ship</center></span></th>
+                                    <th width="20%"><span><center>Delivered</center></span></th>
+                                    <th width="20%"></th>
+                                </tr>
+                                <t t-foreach="o.move_line_ids_without_package" t-as="line">
+                                    <tr style="border-bottom:1px solid black;">
+                                        <td width="20%"><span class="pull-left" t-esc="line.product_id.stock_code"></span></td>
+                                        <td width="20%"><span class="pull-left" t-esc="line.product_id.name"></span></td>
+                                        <td width="20%"><center><span t-esc="line.product_qty" class="pull-right"></span></center></td>
+                                        <td width="20%"><center><span class="pull-right">0</span></center></td>
+                                        <td width="20%"><center><span t-esc="line.qty_done" class="pull-right"></span></center></td>
+                                        <td width="20%"></td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+                        <br/><br/><br/>
+                        <div class="row" style="border: 2px solid black;">
+                            <div class="col-xs-3">
+                                <span><span t-field="o.min_date" t-field-options='{"format": "dd/MM/YYYY"}'></span></span><br/><br/>
+                                <span t-if="o.partner_id.name" t-esc="o.partner_id.name"/><br/>
+                                <span t-if="o.partner_id.street" t-esc="o.partner_id.street"/><br/>
+                                <span t-if="o.partner_id.street2" t-esc="o.partner_id.street2"/><br/>
+                                <span t-if="o.partner_id.city" t-esc="o.partner_id.city"/> <span t-if="o.partner_id.state_id" t-esc="o.partner_id.state_id.code"></span>&amp;nbsp;<span t-if="o.partner_id.zip" t-esc="o.partner_id.zip"></span>
+                            </div>
+                            <div class="col-xs-3">
+                                <center>
+                                    Customer: <span t-esc="o.partner_id.name"></span>
+                                    <span>Invoice No: 1085503</span>
+                                </center>
+
+                            </div>
+                            <div class="col-xs-6">
+                                <p style="font-size:10px;">Please retain your receipt as proof of purchase, it is required for any exchange and warranty claims.</p>
+                                <p style="font-size:10px;">We do not refund for an incorrect choice.</p>
+                                <p style="font-size:10px;">Any faults must be reported to our Customer Service Department within 48 hours of being received.</p>
+                                <p style="font-size:10px;"><b>packaging Peanuts: 100% Biodegradable!</b></p>
+                                <span style="font-size:10px;">Wheat or Com Based</span><br/>
+                                <span style="font-size:10px;">The product will breakdown naturally or dissolves when saturated with water.</span><br/>
+                                <span style="font-size:10px;">They can be disposed of in your Recycling Bin or in the Garden or Bathtub and water added to</span><br/>
+                                <span style="font-size:10px;">dissolve.</span>
+                                <p style="font-size:10px;">Best of all it's Australian Made and helps the Environment.</p>
+                                <p style="font-size:10px;">The Cardboard Box is Recyclable as well, simply dispose of in your Recycling Bin after</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <template id="order_delivery_report">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="victoria_stock.sale_order_delivery_report"/>
+                </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

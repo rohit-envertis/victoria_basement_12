@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record id="seq_stock_update" model="ir.sequence">
+            <field name="name">Stock Update</field>
+            <field name="code">stock.update</field>
+            <field name="prefix">ST/IN/</field> <!-- In Stock Transfer -->
+            <field name="padding">4</field>
+        </record>
+
+        <record id="view_stock_update_form" model="ir.ui.view">
+            <field name="name">Stock Update</field>
+            <field name="model">stock.update</field>
+            <field name="arch" type="xml">
+                <form string="Stock Update">
+                    <header>
+                        <button class="oe_highlight" name="button_confirm" states="draft" string="Confirm" type="object"/>
+                        <button class="oe_highlight" name="button_transfer" states="confirm" string="Verify" type="object"/>
+                        <button name="do_pass" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'transfer')]}" string="Accept"/>
+                        <button name="do_pass" type="object" attrs="{'invisible': [('state', '!=', 'fail')]}" string="Accept"/>
+                        <button name="do_fail" type="object" class="btn-primary" attrs="{'invisible': [('state', '!=', 'transfer')]}" string="Deny"/>
+                        <button name="do_fail" type="object" attrs="{'invisible': [('state', '!=', 'pass')]}" string="Deny"/>
+                        <button name="action_invoice_sent_to_headoffice" type="object" string="Send Invoice by Email" attrs="{'invisible':[('state', 'not in', ('pass','done'))]}" class="oe_highlight" groups="base.group_user"/>
+                        <button name="button_done" states="pass" string="Done" type="object" class="oe_highlight"/>
+                        <button name="button_cancel" states="draft,transfer,fail" string="Cancel" type="object"/>
+                        <field name="state" statusbar_visible="draft,confirm,transfer,done" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                         <div class="oe_button_box" name="button_box">
+                            <button
+                                attrs="{'invisible':[('picking_ids', '=', False)]}"
+                                class="oe_stat_button" icon="fa-truck"
+                                name="action_view_picking"
+                                type="object" string="Picking"/>
+                            <field invisible="1" name="picking_ids"/>
+                            <button
+                                attrs="{'invisible':[('invoice_id', '=', False)]}"
+                                class="oe_stat_button" icon="fa-money"
+                                name="action_view_invoice"
+                                type="object" string="Invoices"/>
+                            <field invisible="1" name="invoice_id"/>
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Name"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field string="Vendor" name="partner_id"
+                                    context="{'default_customer': 0, 'search_default_supplier': 1, 'default_supplier': 1}"
+                                    domain="[('supplier', '=', True)]" required="1"
+                                    attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="date" required="1"/>
+                                <field name="src_location_id" invisible="1"/>
+                                <field name="dest_location_id" options="{'no_create': True}"
+                                    domain="[('usage', '=', 'internal')]" required="1"
+                                    attrs="{'readonly':[('state', '!=', 'draft')]}"/>
+                            </group>
+                        </group>
+                        <field name="stock_transfer_lines" attrs="{'readonly':[('state', '!=', 'draft')]}">
+                            <tree editable="bottom" string="Updates Lines">
+                                <field name="product_id"/>
+                                <field name="name"/>
+                                <field name="product_qty"/>
+                                <field name="product_uom"/>
+                                <field name="price_unit"/>
+                                <!-- <field name="src_location_id"/>
+                                <field name="dest_location_id"/> -->
+                                <field name="price_subtotal"/>
+                            </tree>
+                        </field>
+                        <field class="oe_inline" name="notes" placeholder="Notes ..."/>
+                        <div class="oe_clear"/>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="view_stock_update_tree" model="ir.ui.view">
+            <field name="name">Stock Update</field>
+            <field name="model">stock.update</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Update">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="date" string="Received Date"/>
+                     <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_stock_update_search" model="ir.ui.view">
+            <field name="name">Stock Update</field>
+            <field name="model">stock.update</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_stock_update" model="ir.actions.act_window">
+            <field name="name">Stock Received/Update</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.update</field>
+            <field name="view_id" ref="view_stock_update_tree"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="victoria_inventory.action_stock_update" id="menu_stock_update" parent="stock.menu_stock_warehouse_mgmt" sequence="2"/>
+
+    </data>
+</odoo>

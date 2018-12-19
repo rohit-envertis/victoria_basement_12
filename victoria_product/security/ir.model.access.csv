@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_price_history,price_history,model_price_history,,1,1,1,0
+access_product_brand,access_product_brand,model_product_brand,,1,1,1,1
+access_product_web_category,product_web_category,model_product_web_category,,1,1,1,0
+access_product_style,product_style,model_product_style,,1,1,1,0

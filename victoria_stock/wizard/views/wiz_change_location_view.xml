@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="wiz_change_location_view" model="ir.ui.view">
+            <field name="name">wiz.change.location.view</field>
+            <field name="model">wiz.change.location</field>
+            <field name="priority">30</field>
+            <field name="arch" type="xml">
+                <form string="Change Destionation Location" >
+                    <h3>Are you sure you want to change destination location ? It will be effecting on stock move and stock opertaion.</h3>
+                    <br/><br/>
+                    <group>
+                        <field name="wiz_location_dest_id"/>
+                        <field name="picking_id" invisible="1" />
+                    </group>
+                    <footer>
+                        <button string="Apply" type="object" name="dest_loc_change" class="oe_highlight" />
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

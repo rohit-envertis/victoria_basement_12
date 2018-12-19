@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_delivery_document_inherit_vb" inherit_id="stock.report_delivery_document">
+        <xpath expr="//t[@t-if='o.move_lines and o.move_lines[0].partner_id']" position="replace">
+            <div class="col-xs-4 pull-left">
+                <div>
+                    <span>
+                        <strong>Delivery Address:</strong>
+                    </span>
+                </div>
+                <div name="destination_header" t-if="o.location_dest_id">
+                    <div t-field="o.location_dest_id.street"/>
+                    <div t-field="o.location_dest_id.street2"/>
+                    <div t-field="o.location_dest_id.city"/>
+                    <div t-field="o.location_dest_id.zip"/>
+                    <div t-field="o.location_dest_id.state_id"/>
+                    <div t-field="o.location_dest_id.country_id"/>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//t[@t-if='not (o.move_lines and o.move_lines[0].partner_id) and o.partner_id']" position="replace">
+             <div class="col-xs-4 pull-right">
+                <div>
+                    <span>
+                        <strong>Customer Address:</strong>
+                    </span>
+                </div>
+                <div name="source_header" t-if="o.location_id">
+                    <div t-field="o.location_id.street"/>
+                    <div t-field="o.location_id.street2"/>
+                    <div t-field="o.location_id.city"/>
+                    <div t-field="o.location_id.zip"/>
+                    <div t-field="o.location_id.state_id"/>
+                    <div t-field="o.location_id.country_id"/>
+                </div>
+             </div>
+        </xpath>
+        <!--<xpath expr="//t[@t-if='o.move_lines and o.move_lines[0].partner_id']/[@name='partner_header']" position="after">-->
+            <!--<div class="col-xs-4 pull-left">-->
+                <!--<div>-->
+                    <!--<span>-->
+                        <!--<strong>Delivery Address:</strong>-->
+                    <!--</span>-->
+                <!--</div>-->
+                <!--<div name="destination_header" t-if="o.location_dest_id">-->
+                    <!--<div t-field="o.location_dest_id.street"/>-->
+                    <!--<div t-field="o.location_dest_id.street2"/>-->
+                    <!--<div t-field="o.location_dest_id.city"/>-->
+                    <!--<div t-field="o.location_dest_id.zip"/>-->
+                    <!--<div t-field="o.location_dest_id.state_id"/>-->
+                    <!--<div t-field="o.location_dest_id.country_id"/>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="col-xs-4 pull-right">-->
+                <!--<div>-->
+                    <!--<span>-->
+                        <!--<strong>Customer Address:</strong>-->
+                    <!--</span>-->
+                <!--</div>-->
+                <!--<div name="source_header" t-if="o.location_id">-->
+                    <!--<div t-field="o.location_id.street"/>-->
+                    <!--<div t-field="o.location_id.street2"/>-->
+                    <!--<div t-field="o.location_id.city"/>-->
+                    <!--<div t-field="o.location_id.zip"/>-->
+                    <!--<div t-field="o.location_id.state_id"/>-->
+                    <!--<div t-field="o.location_id.country_id"/>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</xpath>-->
+    </template>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="ir_sequence_stock_check" model="ir.sequence">
+            <field name="name">Sequence Stock Checker</field>
+            <field name="code">stock.checker.seq</field>
+            <field name="prefix">STOCK-%(y)s-</field>
+            <field name="padding">5</field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_requet_docket_report" name="Requet Docket Report">
+            <t t-call="web.html_container">
+                <div class="page">
+                    <t t-foreach="docs" t-as="i">
+                        <div >
+                            <!-- Title PART-->
+                            <!-- Hotel SUMMARY PART -->
+                            <div class="row" style="font-size:12; margin-top: 20px;">
+                                <table class="table" style="width:100%">
+                                    <thead>
+                                        <tr style="background-color: #eef0e3;">
+                                            <th style="text-align: center;">#</th>
+                                            <th style="text-align: center;">Reference</th>
+                                            <th style="text-align: center;">Code</th>
+                                            <th style="text-align: center;">Name</th>
+                                            <th style="text-align: center;">From</th>
+                                            <th style="text-align: center;">To</th>
+                                            <th style="text-align: center;">Qty</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-if="i.get_itmes()">
+                                            <t t-foreach="i.get_itmes()" t-as="product">
+                                                <tr t-foreach="product" t-as="value" >
+                                                    <t t-foreach="value" t-as="line">
+                                                        <td><t t-esc="line"/></td>
+                                                    </t>
+                                                </tr>
+                                            </t>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

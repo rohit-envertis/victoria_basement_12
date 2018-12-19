@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="product_web_category_form_view_inherit" model="ir.ui.view">
+            <field name="name">product.web.category.form</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view" />
+            <field name="arch" type="xml">
+                <field name="name" position="before">
+                    <field name="logo" widget='image' class="oe_avatar"/>
+                </field>
+                <group name="first" position="after">
+                    <field name="is_web_category"/>
+                    <field name="displayy_name" />
+                </group>
+            </field>
+        </record>
+
+        <!-- price update form view -->
+        <record id="view_price_update" model="ir.ui.view">
+            <field name="name">Price Update</field>
+            <field name="model">price.update</field>
+            <field name="arch" type="xml">
+                <form string="Price Update">
+                    <group>
+                        <group>
+                            <field name="product_tmpl_id" invisible="1"/>
+                            <field name="product_variant_count" invisible="1"/>
+                            <field name="product_id" widget="selection"
+                                   domain="[('product_tmpl_id', '=', product_tmpl_id)]"
+                                   attrs="{'readonly': [('product_variant_count', '=', 1)]}"/>
+                            <field name="current_price" readonly="1"/>
+                            <field name="new_price" string="Set New Price"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="change_product_price" string="_Update" type="object" class="btn-primary"/>
+                        <button string="_Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- price update action -->
+        <record id="action_update_price" model="ir.actions.act_window">
+            <field name="name">Update Price</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">price.update</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_price_update"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <!--      Not Understand          -->
+        <!--<record model="ir.ui.view" id="product_template_kanban_codehide_view">-->
+            <!--<field name="name">Product Template Kanban Code Hide</field>-->
+            <!--<field name="model">product.template</field>-->
+            <!--<field name="inherit_id" ref="product.product_template_kanban_view"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<span t-if="record.default_code.value" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</span>-->
+            <!--</field>-->
+        <!--</record>-->
+
+        <!-- product template search view inherit -->
+        <record id="product_template_search_view_victoria" model="ir.ui.view">
+            <field name="name">product.template.search.victoria</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <filter name="filter_to_sell" position="before">
+                    <!--  <filter name="state_new" string="New" domain="[('state', '=', 'new')]"/>
+                     <filter name="state_progress" string="Progress" domain="[('state', '=', 'progress')]"/>
+                     <filter name="state_done" string="Done" domain="[('state', '=', 'done')]"/> -->
+                    <separator/>
+                </filter>
+                <field name="pricelist_id" position="after">
+                    <group expand="1" string="Group By">
+                        <filter string="Category" name="category" context="{'group_by':'category_name'}"/>
+                        <filter string="Style" name="style" context="{'group_by':'style_id'}"/>
+                    </group>
+                </field>
+            </field>
+        </record>
+
+        <record id="product.product_template_action" model="ir.actions.act_window">
+            <field name="name">Products</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="product.product_template_tree_view"/>
+            <field name="context">{"search_default_filter_to_sell":1,"search_default_category":1,"search_default_style":1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to define a new product.
+                </p><p>
+                You must define a product for everything you sell, whether it's a physical product, a consumable or a service you offer to customers.
+            </p><p>
+                The product form contains information to simplify the sale process: price, notes in the quotation, accounting data, procurement methods, etc.
+            </p>
+            </field>
+        </record>
+
+        <record id="product.product_normal_action_sell" model="ir.actions.act_window">
+            <field name="name">Product Variants</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="view_type">form</field>
+            <field name="context">{"search_default_filter_to_sell":1,"search_default_category":1,"search_default_style":1}</field>
+            <field name="view_id" ref="product.product_product_tree_view"/>
+            <field name="search_view_id" ref="product.product_search_form_view"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to define a new product.
+                </p><p>
+                You must define a product for everything you sell, whether it's
+                a physical product, a consumable or a service you offer to
+                customers.
+            </p><p>
+                The product form contains information to simplify the sale
+                process: price, notes in the quotation, accounting data,
+                procurement methods, etc.
+            </p>
+            </field>
+        </record>
+
+        <!-- product template tree view inherit -->
+        <record id="view_victoria_product_template_tree" model="ir.ui.view">
+            <field name="name">victoria.product.template.tree.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="default_code" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="default_code" position="after">
+                    <field name="stock_code" />
+                    <field name="title1"/>
+                    <field name="brand_id" invisible="1"/>
+                </field>
+                <field name="name" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
+
+        <!-- product template form view inherit -->
+        <record id="view_victoria_product_template_form" model="ir.ui.view">
+            <field name="name">victoria.product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <header position="inside">
+                    <!-- <field name="state" widget="statusbar" clickable="True"/> -->
+                </header>
+                <label for="sale_ok" position="attributes">
+                    <attribute name="string">Active for Sale</attribute>
+                </label>
+                <label for="purchase_ok" position="attributes">
+                    <attribute name="string">Active for Purchase</attribute>
+                </label>
+
+                <!--  <div name="button_box" position="inside">
+                     <button class="oe_stat_button" name="publish_on_website_button"
+                         type="object" icon="fa-globe">
+                         <field name="publish_on_website" widget="product_boolean_button" options='{"terminology1": "unpublish_on_website"}'/>
+                     </button>
+                 </div> -->
+                <xpath expr="//notebook/page[@name='general_information']" position="inside">
+                    <group>
+                        <field name="long_description"/>
+                    </group>
+                </xpath>
+                <field name="list_price" position="after">
+                    <!-- <field name="price_label" widget="radio"/> -->
+                    <field name="rrp"/>
+                    <field name="discount_price"/>
+                    <field name="dicount_price_type"  widget="radio" options="{'horizontal': true}"/>
+
+                    <field name="discount_percent" invisible="1"/>
+                    <field name="start_date"/>
+                    <field name="end_date"/>
+                </field>
+                <!-- <field name="list_price" position="replace">
+                    <div>
+                        <label for="list_price" string="Hot Price"
+                            attrs="{'invisible': [('price_label','=','shop')]}"/>
+                        <label for="list_price" string="Shop Price" 
+                            attrs="{'invisible': [('price_label','=','hot')]}"/>
+                    </div>
+                    <field name="list_price" nolabel="1" />
+                </field> -->
+
+                <field name="categ_id" position="after">
+                    <field name="cartoon_qty"/>
+                    <field name="inner_qty"/>
+                </field>
+                <group name="accounting" position="inside">
+                    <group>
+                        <field name="landed_cost" />
+                    </group>
+                </group>
+                <group name="group_lots_and_weight" position="inside">
+                    <field name="height" />
+                    <field name="width" />
+                    <field name="depth" />
+                </group>
+                <group name="sale" position="inside">
+                    <group string="Website Sale">
+                        <field name="publish_on_website"/>
+                    </group>
+                </group>
+            </field>
+        </record>
+
+        <!-- product template only form view inherit -->
+        <record id="product_template_customiztion" model="ir.ui.view">
+            <field name="name">product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view" />
+            <field name="arch" type="xml">
+                <header position="inside">
+                    <button name="%(action_update_price)d" string="Change Price" type="action" attrs="{'invisible': [('own_product', '=',False)]}" groups="victoria_profile.group_manager_victoria_headoffice"/>
+                    <!-- <field name="state" widget="statusbar" clickable="True"/> -->
+                </header>
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="category_name"/>
+                </xpath>
+                <div name="options" position="inside">
+                    <div>
+                        <field name="own_product"/>
+                        <label for="own_product"/>
+                    </div>
+                    <div>
+                        <field name="track_activity"/>
+                        <label for="track_activity"/>
+                    </div>
+                </div>
+                <field name="default_code" position="attributes">
+                    <attribute name="string">Subcode</attribute>
+                </field>
+                <field name='list_price' position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+                <field name="default_code" position="attributes">
+                    <attribute name="string">Magento code</attribute>
+                    <attribute name="readonly">1</attribute>
+                </field>
+                <field name="barcode" position="after">
+                    <field name="brand_id"/>
+                    <field name="style_id"/>
+                    <field name="campaign"/>
+                    <field name="mpn"/>
+                    <field name="gtin"/>
+                </field>
+                <xpath expr="//notebook" position="inside">
+                    <page name="images" string="Website">
+                        <group>
+                            <group string="Meta Data">
+                                <field name="title" string="Meta Title" placeholder="Product Title"/>
+                                <field name="keyword" string="Meta Keyword" placeholder="Product Keyword"/>
+                                <field name="meta_description" string="Meta Description" placeholder="Description"/>
+                            </group>
+                            <group string="Description">
+                                <field name="title1" string="Title" placeholder="Product Title"/>
+                                <field name="product_set"/>
+                                <field name="made_in"/>
+                                <field name="description" string="Description" placeholder="Product Description"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Web Specific">
+                                <field name="new_arrival"/>
+                                <field name="on_sale"/>
+                                <field name="sw_featured"/>
+                                <field name="special_flag"/>
+                                <field name="special_week"/>
+                                <field name="free_shipping" widget="radio" options="{'horizontal': true}"/>
+                                <field name="store_only" widget="radio" options="{'horizontal': true}"/>
+                                <field name="video_url"/>
+
+                            </group>
+                            <group string="Care">
+                                <field name="oven" widget="radio" options="{'horizontal': true}"/>
+                                <field name="electric" widget="radio" options="{'horizontal': true}"/>
+                                <field name="dish_wash" widget="radio" options="{'horizontal': true}"/>
+                                <field name="induction" widget="radio" options="{'horizontal': true}"/>
+                                <!-- this stovetop is Microwave -->
+                                <field name="fridge" widget="radio" options="{'horizontal': true}"/>
+                                <field name="microwave" widget="radio" options="{'horizontal': true}"/>
+                                <field name="hand_wash" widget="radio" options="{'horizontal': true}"/>
+                                <field name="halogen" widget="radio" options="{'horizontal': true}"/>
+                                <field name="gas" widget="radio" options="{'horizontal': true}"/>
+                            </group>
+                        </group>
+                        <!-- THESE FIELDS WAS PREVIOUSLY AVAILABLE IN THIS VIEW-->
+                        <!-- <field name="web_category_id"/>
+                        <field name="free_delivery"/> -->
+                        <group string="Features">
+                            <group>
+                                <field name="color_code"/>
+                                <field name="components"/>
+                                <field name="collections"/>
+                                <field name="interior"/>
+                                <field name="material"/>
+                                <field name="cover" widget="radio" options="{'horizontal': true}"/>
+                                <field name="handle" widget="radio" options="{'horizontal': true}"/>
+
+                            </group>
+                            <group>
+                                <field name="capacity"/>
+                                <field name="temperature"/>
+                                <field name="suitability"/>
+                                <field name="warranty"/>
+                                <field name="voltage"/>
+                                <field name="wattage"/>
+                                <field name="instruction_booklet" filename="instruction_booklet_name"/>
+                                <field name="instruction_booklet_name" invisible="1"/>
+                                <field name="diameter"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Price History" groups="victoria_profile.group_manager_victoria_headoffice">
+                        <field name="price_history_ids" readonly="1" default_order="changed_date">
+                            <tree>
+                                <field name="old_price"/>
+                                <field name="new_price"/>
+                                <field name="changed_date"/>
+                                <field name="user_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page  string="Information">
+                        <label for='feature' />
+                        <field name="feature"/>
+                        <label for='benefits' />
+                        <field name="benefits"/>
+                        <label for='contain' />
+                        <field name="contain"/>
+                        <label for='faq' />
+                        <field name="faq"/>
+                    </page>
+                </xpath>
+
+            </field>
+        </record>
+
+        <!-- product template form view custom inherit -->
+        <record id="view_readonly_list_price" model="ir.ui.view">
+            <field name="name">product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="victoria_product.product_template_customiztion"/>
+            <field name="groups_id" eval="[(4, ref('victoria_profile.group_manager_victoria_headoffice'))]"/>
+            <field name="arch" type="xml">
+                <field name="list_price" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </field>
+
+            </field>
+        </record>
+
+        <!-- product product tree view inherit -->
+        <record id="view_victoria_product_product_tree_view" model="ir.ui.view">
+            <field name="name">victoria.product.product.tree.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="arch" type="xml">
+                <field name="default_code" position="after">
+                    <field name="product_tree_name" />
+                    <field name="brand_id" invisible="1"/>
+
+                </field>
+                <field name="name" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+            </field>
+        </record>
+
+        <!-- product form view inherit -->
+        <record id="product_product_customiztion" model="ir.ui.view">
+            <field name="name">product.product</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <header position="inside">
+                    <button name="%(action_update_price)d" string="Change Price" type="action" attrs="{'invisible': [('own_product', '=',False)]}" groups="victoria_profile.group_manager_victoria_headoffice"/>
+                    <!-- <field name="state" widget="statusbar" clickable="True"/> -->
+                </header>
+                <field name="categ_id" position="after">
+                    <field name="category_name" />
+                </field>
+
+                <div name="options" position="inside">
+                    <div>
+                        <field name="own_product"/>
+                        <label for="own_product"/>
+                    </div>
+                </div>
+                <field name="default_code" position="attributes">
+                    <attribute name="string">Subcode</attribute>
+                </field>
+                <xpath expr='//page[1]' position="after">
+                    <page string="Suggested Products">
+                        <label for="suggested_products" attrs="{'invisible':[('suggested_products','not in',[None,False])]}"/>
+                        <field name="suggested_products">
+                            <tree>
+                                <field name="name"/>
+                            </tree>
+                        </field>
+                    </page>
+
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Website">
+                        <group>
+                            <field name="title" string="Meta Title"
+                                   placeholder="Product Title"/>
+                            <field name="keyword" string="Meta Keyword"
+                                   placeholder="Product Keyword"/>
+                            <field name="meta_description" string="Meta Description"
+                                   placeholder="Description"/>
+                            <field name="product_set"/>
+                            <field name="made_in"/>
+                            <field name="store_only" widget="radio"/>
+                            <field name="title1" string="Title"
+                                   placeholder="Product Title"/>
+                            <field name="description" string="Description"
+                                   placeholder="Product Description"/>
+                            <field name="web_category_id"/>
+                        </group>
+                    </page>
+                    <page string="Price History" groups="victoria_profile.group_manager_victoria_headoffice">
+
+                        <field name="price_history_ids" readonly="1" default_order="changed_date">
+                            <tree>
+                                <field name="old_price"/>
+                                <field name="new_price"/>
+                                <field name="changed_date"/>
+                                <field name="user_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+                <field name='lst_price' position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+                <field name="barcode" position="after">
+                    <field name="brand_id"/>
+                    <field name="style_id"/>
+                    <field name="campaign"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- product form view custom inherit -->
+        <record id="view_readonly_list_price_product" model="ir.ui.view">
+            <field name="name">product.product</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="victoria_product.product_product_customiztion"/>
+            <field name="groups_id" eval="[(4, ref('victoria_profile.group_manager_victoria_headoffice'))]"/>
+            <field name="arch" type="xml">
+                <field name="lst_price" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_product_feature_wizards" model="ir.ui.view">
+            <field name="name">Change</field>
+            <field name="model">product.feature.wizards</field>
+            <field name="arch" type="xml">
+                <form string="Change">
+                    <group>
+                        <field name="product_id"/>
+                        <field name="feature"/>
+                    </group>
+                    <footer>
+                        <button name="change_feature" string="_Apply" type="object" class="btn-primary"/>
+                        <button string="_Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_feature_wizards" model="ir.actions.act_window">
+            <field name="name">Change Feature</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.feature.wizards</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_product_feature_wizards"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_product_benefit_wizards" model="ir.ui.view">
+            <field name="name">Change</field>
+            <field name="model">product.benefit.wizards</field>
+            <field name="arch" type="xml">
+                <form string="Change">
+                    <group>
+                        <field name="product_id"/>
+                        <field name="benefit"/>
+                    </group>
+                    <footer>
+                        <button name="change_benefit" string="_Apply" type="object" class="btn-primary"/>
+                        <button string="_Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_benefit_wizards" model="ir.actions.act_window">
+            <field name="name">Change Benefit</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.benefit.wizards</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_product_benefit_wizards"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_product_contain_wizards" model="ir.ui.view">
+            <field name="name">Change</field>
+            <field name="model">product.contain.wizards</field>
+            <field name="arch" type="xml">
+                <form string="Change">
+                    <group>
+                        <field name="product_id"/>
+                        <field name="contain"/>
+                    </group>
+                    <footer>
+                        <button name="change_contain" string="_Apply" type="object" class="btn-primary"/>
+                        <button string="_Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_con_wizards" model="ir.actions.act_window">
+            <field name="name">Change contain</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.contain.wizards</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_product_contain_wizards"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_product_faq_wizards" model="ir.ui.view">
+            <field name="name">Change</field>
+            <field name="model">product.faq.wizards</field>
+            <field name="arch" type="xml">
+                <form string="Change">
+                    <group>
+                        <field name="product_id"/>
+                        <field name="faq"/>
+                    </group>
+                    <footer>
+                        <button name="change_faq" string="_Apply" type="object" class="btn-primary"/>
+                        <button string="_Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_faq_wizards" model="ir.actions.act_window">
+            <field name="name">Change faq</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.faq.wizards</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_product_faq_wizards"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_product_description_wizards" model="ir.ui.view">
+            <field name="name">Change Description</field>
+            <field name="model">product.description.wizards</field>
+            <field name="arch" type="xml">
+                <form string="Change">
+                    <group>
+                        <field name="product_id"/>
+                        <field name="description"/>
+                    </group>
+                    <footer>
+                        <button name="change_description" string="_Apply" type="object" class="btn-primary"/>
+                        <button string="_Cancel" class="btn-default" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_desc_wizards" model="ir.actions.act_window">
+            <field name="name">Change Desc</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.description.wizards</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_product_description_wizards"/>
+            <field name="target">new</field>
+        </record>
+        <!-- Product Editable Tree View -->
+        <record id="view_product_product_editable_tree" model="ir.ui.view">
+            <field name="name">product.product.editable</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <tree string="Products" editable="bottom" default_order="name">
+                    <field name="image_medium" widget="image" string="Image" class="oe_avatar"/>
+                    <field name="default_code" string="Subcode" invisible="1"/>
+                    <field name="stock_code" string="Stock Code" />
+                    <field name="name" invisible="1"/>
+                    <field name="product_tree_name"/>
+                    <field name="barcode"/>
+                    <field name="brand_id"/>
+                    <field name="web_category_id"/>
+                    <field name="categ_id" string="Category"/>
+                    <field name="list_price" string="Sale Price"/>
+                    <field name="standard_price" string="Cost Price"/>
+                    <field name="meta_description"/>
+                    <field name="qty_available"/>
+                    <button name="%(stock.view_change_product_quantity)d" string="Update Qty" type="action"/>
+                    <button name="%(victoria_product.action_product_feature_wizards)d" string="Ft" type="action"/>
+                    <button name="%(victoria_product.action_product_benefit_wizards)d" string="Bf" type="action"/>
+                    <button name="%(victoria_product.action_product_con_wizards)d" string="Con" type="action"/>
+                    <button name="%(victoria_product.action_product_faq_wizards)d" string="Faq" type="action"/>
+                    <button name="%(victoria_product.action_product_desc_wizards)d" string="Des" type="action"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Product Editable Tree View Action-->
+        <record id="action_view_product_product_editable_tree" model="ir.actions.act_window">
+            <field name="name">Product Editable</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_id" ref="view_product_product_editable_tree"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="product.product_search_form_view"/>
+        </record>
+
+        <!-- Product Editable Tree View Menu -->
+        <menuitem action="victoria_product.action_view_product_product_editable_tree" groups="product.group_product_variant" id="menu_view_product_product_editable_tree" parent="crm.crm_menu_root" sequence="100"/>
+    </data>
+</odoo>

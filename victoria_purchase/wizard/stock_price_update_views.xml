@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_stock_price_update" model="ir.ui.view">
+        <field name="name">stock.price.update.view.form</field>
+        <field name="model">stock.price.update</field>
+        <field name="arch" type="xml">
+            <form string="Price Change?">
+                <group>
+                    <field name="invoice_id" invisible="1"/>
+                    <field name="invoice_line_id" invisible="1"/>
+                    <p>
+                        Are you sure you want to change cost price in product ?
+                    </p>
+                </group>
+                <footer>
+                    <button name="process" string="Yes" type="object" class="btn-primary"/>
+                    <button string="No" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

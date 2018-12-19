@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Product Stock From View -->
+        <record model="ir.ui.view" id="stock_checker_view_form">
+            <field name="name">stock.checker.form</field>
+            <field name="model">stock.checker</field>
+            <field name="arch" type="xml">
+                <form string="Stock Checker">
+                     <header>
+                        <button name="refresh_product_list" string="Check Stock" type="object" class="oe_highlight" attrs="{'invisible':[('state','in',('close'))]}"/>
+                        <button name="state_close" attrs="{'invisible':[('state','!=', 'done')]}" string="Mark as Done" type="object" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <group string="Location">
+                            <field name="location" widget="many2many_tags" nolabel="1" options="{'no_create': True}" domain="[('usage', '=', 'internal')]"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="user_id" class="test-author_id" readonly="1"/>
+                                <field name="create_date" string="Creation Date" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="nagative_qty"/>
+                                <field name="min_qty" attrs="{'invisible':[('nagative_qty', '=', True)]}"/>
+                            </group>
+                        </group>
+                        <div class="oe_left">
+                            <group>
+                                <field name="product_type" widget="many2many_tags"/>
+                            </group>
+                        </div>
+                        <notebook>
+                            <page string="Products">
+                                <field name="quant_ids" readonly="1">
+                                    <tree string="Product Stock" default_order="location_id"
+                                        colors="red:qty &lt; 0">
+                                        <field name="location_id" />
+                                        <field name="product_code" />
+                                        <field name="product_id" />
+                                        <field name="categ_id" />
+                                        <!-- <field name="sale_price" /> -->
+                                        <!--<field name="qty" />-->
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Product Stock Tree View -->
+        <record id="stock_checker_view_tree" model="ir.ui.view">
+            <field name="name">stock.checker.tree</field>
+            <field name="model">stock.checker</field>
+            <field name="arch" type="xml">
+                <tree string="Product Stock">
+                    <field name="name" />
+                    <field name="create_date" string="Creation Date" widget="datetime"/>
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <!-- Product Stock Search View -->
+        <record id="stock_checker_view_search" model="ir.ui.view">
+            <field name="name">stock.checker.search</field>
+            <field name="model">stock.checker</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="location"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Product Stock action-->
+        <record id="action_stock_checker" model="ir.actions.act_window">
+            <field name="name">Stock Check</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.checker</field>
+            <field name="view_id" ref="stock_checker_view_tree"/>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Check Current Stock" parent="stock.menu_warehouse_report" id="check_current_stock" action="action_stock_checker" sequence="123"/>
+    </data>
+</odoo>

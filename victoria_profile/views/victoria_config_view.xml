@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- Base Default Configuration -->
+    <!--<data>-->
+        <!--<record id="set_general_configuration_victoria" model="base.config.settings">-->
+            <!--<field name="group_multi_currency" eval="1"/>-->
+        <!--</record>-->
+    <!--</data>-->
+
+    <!--<data>-->
+        <!--<function-->
+            <!--model="base.config.settings"-->
+            <!--name="execute"-->
+            <!--eval="[[ref('set_general_configuration_victoria')]]"/>-->
+    <!--</data>-->
+
+        <!-- Stock Default Configuration -->
+    <!--<data>-->
+        <!--<record id="set_default_configuration_victoria" model="stock.config.settings">-->
+            <!--<field name="group_stock_tracking_lot" eval="1"/>-->
+            <!--<field name="module_stock_landed_costs" eval="1"/>-->
+            <!--<field name="warehouse_and_location_usage_level" eval="1"/>-->
+            <!--<field name="group_stock_packaging" eval="1"/>-->
+        <!--</record>-->
+    <!--</data>-->
+
+    <!--<data>-->
+        <!--<function-->
+            <!--model="stock.config.settings"-->
+            <!--name="execute"-->
+            <!--eval="[[ref('set_default_configuration_victoria')]]"/>-->
+    <!--</data>-->
+
+    <record model="res.groups" id="stock.group_stock_multi_locations">
+       <field name="users" eval="[(4, ref('base.user_root'))]"/>
+    </record>
+
+    <!-- Sale Default Configuration -->
+    <!-- <data>
+        <record id="set_sale_configuration_victoria" model="sale.config.settings">
+            <field name="sale_pricelist_setting" eval="1"/>
+        </record>
+    </data>
+
+    <data>
+        <function
+            model="sale.config.settings"
+            name="execute"
+            eval="[[ref('set_sale_configuration_victoria')]]"/>
+    </data> -->
+
+    <!-- POS Default Configuration -->
+    <!--<data>-->
+        <!--<record id="set_pos_configuration_victoria" model="res.config.settings">-->
+            <!--<field name="module_pos_mercury" eval="1"/>-->
+        <!--</record>-->
+    <!--</data>-->
+
+    <!--<data>-->
+        <!--<function-->
+            <!--model="res.config.settings"-->
+            <!--name="execute"-->
+            <!--eval="[[ref('set_pos_configuration_victoria')]]"/>-->
+    <!--</data>-->
+
+</odoo>
