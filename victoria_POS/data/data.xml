@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- POS Shop -->
+        <record model="pos.shop" id="pos_shop_ALEXANDRIA">
+            <field name="name">ALEXANDRIA</field>
+            <field name="location_id" ref="victoria_profile.stock_location_ALEXANDRIA"/>
+        </record>
+        <record model="pos.shop" id="pos_shop_ARTARMON">
+            <field name="name">ARTARMON</field>
+            <field name="location_id" ref="victoria_profile.stock_location_ARTARMON"/>
+        </record>
+        <record model="pos.shop" id="pos_shop_AUBURN">
+            <field name="name">AUBURN</field>
+            <field name="location_id" ref="victoria_profile.stock_location_AUBURN"/>
+        </record>
+        <record model="pos.shop" id="pos_shop_CH">
+            <field name="name">CASTLE HILL</field>
+            <field name="location_id" ref="victoria_profile.stock_location_CASTLEHILL"/>
+        </record>
+        <record model="pos.shop" id="pos_shop_QVB">
+            <field name="name">Queen Victoria Building</field>
+            <field name="location_id" ref="victoria_profile.stock_location_QVB"/>
+        </record>
+
+    </data>
+
+    <record id="pos_shop_rule_user" model="ir.rule">
+        <field name="name">See Own POS Shop User</field>
+        <field name="model_id" ref="victoria_POS.model_pos_shop"/>
+        <field name="groups" eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+        <field name="domain_force">[('user_id','=',user.id)]</field>
+    </record>
+    <record id="pos_shop_rule_manager" model="ir.rule">
+        <field name="name">See Own POS Shop Manager</field>
+        <field name="model_id" ref="victoria_POS.model_pos_shop"/>
+        <field name="groups" eval="[(4, ref('point_of_sale.group_pos_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="pos_config_rule_user" model="ir.rule">
+        <field name="name">See Own POS User</field>
+        <field name="model_id" ref="point_of_sale.model_pos_config"/>
+        <field name="groups" eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+        <field name="domain_force">[('shop_id.user_id','in',user.id)]</field>
+    </record>
+    <record id="pos_config_rule_manager" model="ir.rule">
+        <field name="name">See Own POS Config Manager</field>
+        <field name="model_id" ref="point_of_sale.model_pos_config"/>
+        <field name="groups" eval="[(4, ref('point_of_sale.group_pos_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="allow_only_own_pos_order" model="ir.rule">
+        <field name="name">Allowed only own POS Order</field>
+        <field name="model_id" ref="point_of_sale.model_pos_order"/>
+        <field name="groups" eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+        <field name="domain_force">['|',('config_id.shop_id.user_id','=', user.id),('id','=',False)]</field>
+    </record>
+
+    <record id="allow_only_own_pos_order_report" model="ir.rule">
+        <field name="name">Allowed only own POS Order Report</field>
+        <field name="model_id" ref="point_of_sale.model_report_pos_order"/>
+        <field name="groups" eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+        <field name="domain_force">['|',('config_id.shop_id.user_id','=', user.id),('id','=',False)]</field>
+    </record>
+
+</odoo>
